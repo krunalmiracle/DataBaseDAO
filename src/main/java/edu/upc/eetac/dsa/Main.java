@@ -82,24 +82,43 @@ public class Main {
         server.shutdownNow();
         */
         /////////////////////DATABASE TEST 1///////////////////////////////////////////////
-        DBJDBC dbjdbc1 = new DBJDBC();
         DBJDBC.findall();
         DBJDBC.insert();
         DBJDBC.findall();
         /////////////////////DATABASE TEST 2///////////////////////////////////////////////
-
+        DBJDBC2.insert();
     }
 }
 class DBJDBC2{
     public DBJDBC2(){}//Empty Constructor
-
-}
-
-class DBJDBC {
+    // FORMA MENOS PRIMITIVA QUITAMOS LA POSSIBILIDAD DE SQL INJECTION
     public static void insert() throws Exception {
         Connection connection = null;
         try {
-            connection = getConnection();
+            connection = DBUtils.getConnection();
+            //SQL INJECTION SOLVED
+            String theQuery = "INSERT INTO User (ID,lastname,firstname,address,city) VALUE (0,?,?,?,?)";
+            PreparedStatement statement1 =  connection.prepareStatement(theQuery);
+            statement1.setString(1,"Gremory");
+            statement1.setString(2,"Rias");
+            statement1.setString(3,"Hyoudou Residence");
+            statement1.setString(4,"Tokyo");
+            statement1.execute();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            if(connection!=null){connection.close();}
+        }
+    }
+}
+
+class DBJDBC {
+    // FORMA PRIMITIVA CON POSSIBILIDAD DE SQL INJECTION
+    public static void insert() throws Exception {
+        Connection connection = null;
+        try {
+            connection = DBUtils.getConnection();
             Statement statement1 = connection.createStatement();
             statement1.execute("INSERT INTO User (ID,lastname,firstname,address,city) VALUE (2,'Ochako','Kiss','Midoriya Apartments','Musutafu')");
         }
@@ -112,7 +131,7 @@ class DBJDBC {
     public static void findall()throws Exception {
         Connection connection = null;
         try{
-            connection = getConnection();
+            connection = DBUtils.getConnection();
             Statement statement2 = connection.createStatement();
             ResultSet rs = statement2.executeQuery("SELECT * FROM User WHERE 1=1");
             int id;
@@ -131,7 +150,12 @@ class DBJDBC {
             connection.close();
         }
     }
-    private static Connection getConnection() {
+
+    public void DBJDBC(){}
+}
+class DBUtils{
+
+    public static Connection getConnection() {
         Connection conn = null;
         try
         {
@@ -156,6 +180,5 @@ class DBJDBC {
         }
         return conn;
     }
-    public void DBJDBC(){}
 }
 
