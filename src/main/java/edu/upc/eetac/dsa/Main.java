@@ -15,7 +15,7 @@ import java.net.URI;
 
 public class Main {
     static final Logger logger = Logger.getLogger(Main.class);
-    public static final String BASE_URI = "http://localhost:8080/Backend-Last-Survivor/";
+    public static final String BASE_URI = "http://localhost:8080/BDD-DAO/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -32,9 +32,9 @@ public class Main {
         BeanConfig beanConfig = new BeanConfig();
 
         beanConfig.setHost("localhost:8080");
-        beanConfig.setBasePath("/Backend-Last-Survivor");
-        beanConfig.setContact("DSA-TEAM@estudiantat.upc.edu");
-        beanConfig.setDescription("REST API for XY Manager");
+        beanConfig.setBasePath("/BDD-DAO");
+        beanConfig.setContact("krunal.ratan.badsiwal@estudiantat.upc.edu");
+        beanConfig.setDescription("REST API for BDD-DAO Manager");
         beanConfig.setLicenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html");
         beanConfig.setResourcePackage("edu.upc.eetac.dsa.services");
         beanConfig.setTermsOfServiceUrl("http://www.example.com/resources/eula");
@@ -70,7 +70,7 @@ public class Main {
         //   + "%s application.wadl\nHit enter to stop it...", BASE_URI));
         //Formatting BASE_URI FOR SWAGGER
         String swagger_uri = BASE_URI;
-        String target = "Backend-Last-Survivor";
+        String target = "BDD-DAO";
         String replacement = "swagger3";
         swagger_uri = swagger_uri.replace(target, replacement);
         System.out.println(String.format("RestApi Started at " + "%s\nHit enter to stop it...", swagger_uri));
