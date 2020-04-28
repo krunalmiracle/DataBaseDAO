@@ -87,7 +87,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
         List<Employee> employeeList=null;
         try {
             session = FactorySession.openSession();
-            employeeList = session.findAll(Employee.class);
+            //employeeList = session.findAll(Employee.class);
         }
         catch (Exception e) {
             // LOG
@@ -109,7 +109,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
             HashMap<String, Integer> params = new HashMap<String, Integer>();
             params.put("deptID", deptID);
 
-            employeeList = session.findAll(Employee.class, params);
+            //employeeList = session.findAll(Employee.class, params);
         }
         catch (Exception e) {
             // LOG

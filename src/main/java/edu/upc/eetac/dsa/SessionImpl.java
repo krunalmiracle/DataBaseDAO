@@ -10,11 +10,14 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class SessionImpl implements Session {
-    private final Connection conn;
+public class SessionImpl implements Session  {
 
-    public SessionImpl(Connection conn) {
+    private final Connection conn;
+    public SessionImpl(Connection conn) throws SQLException {
         this.conn = conn;
+        if(conn==null){
+            throw new SQLException("Connection not made:DUE TO BAD JDBC properties file configuration");
+        }
     }
 
     public void save(Object entity) {
@@ -39,7 +42,7 @@ public class SessionImpl implements Session {
         }
 
     }
-
+    // TODO : NEED TO FINISH THIS
     public void close() {
 
     }

@@ -8,9 +8,13 @@ import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
-
+import java.sql.*;
+import java.util.Properties;
+import java.sql.Connection;
+import java.sql.DriverManager;
 // REST AND SWAGGER
 
 public class Main {
@@ -52,7 +56,7 @@ public class Main {
      * @param args - Argument
      * @throws IOException -Throws IOException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         //Log4j initialization with proper configuration
         //PropertiesConfigurator is used to configure logger from properties file
         //Configuring Log4j, location of the log4j.properties file and must always be inside the src folder
@@ -62,7 +66,7 @@ public class Main {
         logger.warn("Warning Test Message!");
         logger.error("Error Test Message!");
         // Server Initialization Code
-        final HttpServer server = startServer();
+       /* final HttpServer server = startServer();
         StaticHttpHandler staticHttpHandler = new StaticHttpHandler("./public/");
         server.getServerConfiguration().addHttpHandler(staticHttpHandler, "/");
 
@@ -74,7 +78,84 @@ public class Main {
         String replacement = "swagger3";
         swagger_uri = swagger_uri.replace(target, replacement);
         System.out.println(String.format("RestApi Started at " + "%s\nHit enter to stop it...", swagger_uri));
-        System.in.read();
+         System.in.read();
         server.shutdownNow();
+        */
+        /////////////////////DATABASE TEST 1///////////////////////////////////////////////
+        DBJDBC dbjdbc1 = new DBJDBC();
+        DBJDBC.findall();
+        DBJDBC.insert();
+        DBJDBC.findall();
+        /////////////////////DATABASE TEST 2///////////////////////////////////////////////
+
     }
 }
+class DBJDBC2{
+    public DBJDBC2(){}//Empty Constructor
+
+}
+
+class DBJDBC {
+    public static void insert() throws Exception {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            Statement statement1 = connection.createStatement();
+            statement1.execute("INSERT INTO User (ID,lastname,firstname,address,city) VALUE (2,'Ochako','Kiss','Midoriya Apartments','Musutafu')");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            if(connection!=null){connection.close();}
+        }
+    }
+    public static void findall()throws Exception {
+        Connection connection = null;
+        try{
+            connection = getConnection();
+            Statement statement2 = connection.createStatement();
+            ResultSet rs = statement2.executeQuery("SELECT * FROM User WHERE 1=1");
+            int id;
+            String lastname,address,city,firstname;
+            while (rs.next()){
+                id = (Integer) rs.getObject(1);
+                lastname = (String) rs.getObject(2);
+                firstname = (String) rs.getObject(3);
+                address = (String) rs.getObject(4);
+                city = (String) rs.getObject(5);
+                System.out.println("ID: "+id+" lastname: "+lastname+" firstname: "+firstname+" address: "+address+" city: "+city);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            connection.close();
+        }
+    }
+    private static Connection getConnection() {
+        Connection conn = null;
+        try
+        {
+            // Create Properties object.
+            Properties databaseProperties = new Properties();
+            String dbSettingsPropertyFile = "src/main/resources/JDBCSettings.properties";
+            // Properties will use a FileReader object as input.
+            FileReader fReader = new FileReader(dbSettingsPropertyFile);
+            // Load jdbc related properties in above file.
+            databaseProperties.load(fReader);
+            // Get each property value of DataBase.
+            String host = databaseProperties.getProperty("db.host");
+            String port = databaseProperties.getProperty("db.port");
+            String dataBase = databaseProperties.getProperty("db.database");
+            String user = databaseProperties.getProperty("db.username");
+            String pass = databaseProperties.getProperty("db.password");
+            conn = DriverManager.getConnection("jdbc:mariadb://"+host+":"+port+"/"+
+                    dataBase+"?user="+user+"&password="+pass);
+        }catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return conn;
+    }
+    public void DBJDBC(){}
+}
+

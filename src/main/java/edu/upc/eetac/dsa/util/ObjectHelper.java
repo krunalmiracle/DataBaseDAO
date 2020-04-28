@@ -1,6 +1,5 @@
 package edu.upc.eetac.dsa.util;
 
-
 import java.lang.reflect.Field;
 
 public class ObjectHelper {
