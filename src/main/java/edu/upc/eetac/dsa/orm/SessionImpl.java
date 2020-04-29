@@ -1,32 +1,32 @@
 package edu.upc.eetac.dsa.orm;
 
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
+import edu.upc.eetac.dsa.RandomUtils;
 import edu.upc.eetac.dsa.orm.util.ObjectHelper;
 import edu.upc.eetac.dsa.orm.util.QueryHelper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.lang.reflect.Field;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 
 
 public class SessionImpl implements Session {
     private final Connection conn;
-
+    private static final int sizeID = 16;
     public SessionImpl(Connection conn) {
         this.conn = conn;
     }
-
+    // TODO FINISHED!
     public void save(Object entity) {
 
         String insertQuery = QueryHelper.createQueryINSERT(entity);
-
+        RandomUtils randomUtils = new RandomUtils();
         PreparedStatement pstm = null;
 
         try {
             pstm = conn.prepareStatement(insertQuery);
-            pstm.setObject(1, 0);
+            pstm.setObject(1,randomUtils.generateId(sizeID) );
             int i = 2;
 
             for (String field: ObjectHelper.getFields(entity)) {
@@ -37,10 +37,15 @@ public class SessionImpl implements Session {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
         }
 
     }
-    // FINISHED
+    // TODO FINISHED!
     public void close() {
         try {
             this.conn.close();
@@ -48,8 +53,33 @@ public class SessionImpl implements Session {
             e.printStackTrace();
         }
     }
-    // TODO FINISH THE GET OBJECT WITH ID FROM DB
-    public Object get(Class theClass, int ID) {
+    // TODO FINISHED!
+    public Object get(Class theClass, String ID) {
+
+        String selectQuery = QueryHelper.createQuerySELECT(theClass);
+
+        Object obj = null;PreparedStatement pstm = null;
+        //Instantiating a object of type class for the getters
+        try {
+            obj = theClass.newInstance();
+            pstm = conn.prepareStatement(selectQuery);
+            pstm.setObject(1, ID);
+            ResultSet resultSet =  pstm.executeQuery();
+            // TODO ADD TO OBJECT THE CORRESPONDING VALUES FROM THE RESULT SET
+            //INVOKE SETTER FOR EACH CORRESPONDING PROPERTY OF THE TABLE TO MAP WITH OBJECT
+            while (resultSet.next()){
+                Field[] fields = theClass.getDeclaredFields();
+                resultSet.getString(1);
+                for(int i = 0; i < fields.length; i ++){
+                    ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+                    String name = resultSetMetaData.getColumnName(i+2);
+
+                    ObjectHelper.setter(obj,name, resultSet.getObject(i+2));
+                }
+            }
+        }catch (InstantiationException|SQLException | NoSuchMethodException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return null;
     }
     // TODO FINISH THE MOFICATION OF THE OBJECT GIVEN THE UPDATED OBJECT

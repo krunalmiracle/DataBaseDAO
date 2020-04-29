@@ -27,7 +27,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
     }
 
 
-    public Employee getEmployee(int employeeID) {
+    public Employee getEmployee(String employeeID) {
         Session session = null;
         Employee employee = null;
         try {
@@ -45,7 +45,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
     }
 
 
-    public void updateEmployee(int employeeID, String name, String surname, double salary) {
+    public void updateEmployee(String employeeID, String name, String surname, double salary) {
         Employee employee = this.getEmployee(employeeID);
         employee.setName(name);
         employee.setSurname(surname);
@@ -65,7 +65,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
     }
 
 
-    public void deleteEmployee(int employeeID) {
+    public void deleteEmployee(String employeeID) {
         Employee employee = this.getEmployee(employeeID);
         Session session = null;
         try {
@@ -99,14 +99,14 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
     }
 
 
-    public List<Employee> getEmployeeByDept(int deptID) {
+    public List<Employee> getEmployeeByDept(String deptID) {
 
         Session session = null;
         List<Employee> employeeList=null;
         try {
             session = FactorySession.openSession();
 
-            HashMap<String, Integer> params = new HashMap<String, Integer>();
+            HashMap<String, String> params = new HashMap<String, String>();
             params.put("deptID", deptID);
 
             employeeList = session.findAll(Employee.class, params);

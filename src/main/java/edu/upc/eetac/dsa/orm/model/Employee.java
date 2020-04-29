@@ -2,6 +2,8 @@ package edu.upc.eetac.dsa.orm.model;
 
 public class Employee {
 
+
+
     private String name;
     private String surname;
     private double salary;
@@ -23,4 +25,9 @@ public class Employee {
     public void setSalary(double salary) {
         this.salary = salary;
     }
+    public String getName() { return name;}
+
+    public String getSurname() { return surname;}
+
+    public double getSalary() {return salary;}
 }
