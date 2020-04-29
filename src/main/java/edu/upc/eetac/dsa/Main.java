@@ -1,5 +1,6 @@
 package edu.upc.eetac.dsa;
 
+import edu.upc.eetac.dsa.orm.SessionImpl;
 import io.swagger.jaxrs.config.BeanConfig;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.sql.*;
 import java.util.Properties;
+import edu.upc.eetac.dsa.orm.model.Item;
 import java.sql.Connection;
 import java.sql.DriverManager;
 // REST AND SWAGGER
@@ -20,6 +22,7 @@ import java.sql.DriverManager;
 public class Main {
     static final Logger logger = Logger.getLogger(Main.class);
     public static final String BASE_URI = "http://localhost:8080/BDD-DAO/";
+    private static Object Item;
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
