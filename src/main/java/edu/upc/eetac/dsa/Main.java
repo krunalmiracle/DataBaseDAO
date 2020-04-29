@@ -40,7 +40,7 @@ public class Main {
 
         beanConfig.setHost("localhost:8080");
         beanConfig.setBasePath("/BDD-DAO");
-        beanConfig.setContact("krunal.ratan.badsiwal@estudiantat.upc.edu");
+        beanConfig.setContact("DSA_1_Team@estudiantat.upc.edu");
         beanConfig.setDescription("REST API for BDD-DAO Manager");
         beanConfig.setLicenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html");
         beanConfig.setResourcePackage("edu.upc.eetac.dsa.services");
@@ -104,10 +104,10 @@ class DBJDBC2{
             //SQL INJECTION SOLVED
             String theQuery = "INSERT INTO User (ID,lastname,firstname,address,city) VALUE (0,?,?,?,?)";
             PreparedStatement statement1 =  connection.prepareStatement(theQuery);
-            statement1.setString(1,"Gremory");
-            statement1.setString(2,"Rias");
-            statement1.setString(3,"Hyoudou Residence");
-            statement1.setString(4,"Tokyo");
+            statement1.setString(1,"Pan");
+            statement1.setString(2,"Peter");
+            statement1.setString(3,"Imaginary Alley");
+            statement1.setString(4,"Neverland");
             statement1.execute();
         }
         catch(Exception e){
@@ -125,7 +125,7 @@ class DBJDBC {
         try {
             connection = DBUtils.getConnection();
             Statement statement1 = connection.createStatement();
-            statement1.execute("INSERT INTO User (ID,lastname,firstname,address,city) VALUE (2,'Ochako','Kiss','Midoriya Apartments','Musutafu')");
+            statement1.execute("INSERT INTO User (ID,lastname,firstname,address,city) VALUE (1,'Pan','Peter','Imaginary Alley','Neverland')");
         }
         catch(Exception e){
             e.printStackTrace();
