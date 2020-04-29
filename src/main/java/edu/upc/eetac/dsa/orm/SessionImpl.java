@@ -99,15 +99,14 @@ public class SessionImpl implements Session {
 
     }
     // TODO FINISH THE DELETE OBJECT FROM DB GIVEN THE OBJECT
-    public void delete(Class c, String ID) {
-        String delete = QueryHelper.createQueryDELETE(c);
+    public void delete(Object o, String ID) {
+        String delete = QueryHelper.createQueryDELETE(o);
         PreparedStatement pstm = null;
         try {
-            Object obj = c.newInstance();
             pstm=conn.prepareStatement(delete);
             pstm.setObject(1, ID);
-            ResultSet res = pstm.executeQuery();
-        } catch (InstantiationException|SQLException|IllegalAccessException e) {
+            pstm.executeQuery();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
