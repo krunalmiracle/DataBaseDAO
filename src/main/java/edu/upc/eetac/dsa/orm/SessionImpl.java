@@ -1,5 +1,6 @@
 package edu.upc.eetac.dsa.orm;
 
+import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
 import edu.upc.eetac.dsa.orm.util.ObjectHelper;
 import edu.upc.eetac.dsa.orm.util.QueryHelper;
 
@@ -39,31 +40,35 @@ public class SessionImpl implements Session {
         }
 
     }
-
+    // FINISHED
     public void close() {
-
+        try {
+            this.conn.close();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
-
+    // TODO FINISH THE GET OBJECT WITH ID FROM DB
     public Object get(Class theClass, int ID) {
         return null;
     }
-
+    // TODO FINISH THE MOFICATION OF THE OBJECT GIVEN THE UPDATED OBJECT
     public void update(Object object) {
 
     }
-
+    // TODO FINISH THE DELETE OBJECT FROM DB GIVEN THE OBJECT
     public void delete(Object object) {
 
     }
-
+    // TODO FINISH THE GET ALL OF THE DATA FROM DB GIVEN THE CLASS(model)
     public List<Object> findAll(Class theClass) {
         return null;
     }
-
+    // TODO FINISH THE GET ALL OF THE DATA FROM DB GIVEN THE CLASS(model) & THE PARAMETERS WHICH MATCH THE HASH
     public List<Object> findAll(Class theClass, HashMap params) {
         return null;
     }
-
+    // TODO FINISH THE SUBJECTIVE QUEURY WHICH WILL BE PASS THROUGH AS A SENTENCE(USE STATEMENTS)
     public List<Object> query(String query, Class theClass, HashMap params) {
         return null;
     }

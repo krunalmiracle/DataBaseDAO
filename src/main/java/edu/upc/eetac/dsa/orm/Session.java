@@ -1,5 +1,6 @@
 package edu.upc.eetac.dsa.orm;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 

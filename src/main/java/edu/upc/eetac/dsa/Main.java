@@ -163,7 +163,7 @@ class DBUtils{
         {
             // Create Properties object.
             Properties databaseProperties = new Properties();
-            String dbSettingsPropertyFile = "src/main/resources/JDBCSettings.properties";
+            String dbSettingsPropertyFile = "src/main/resources/dataBase.properties";
             // Properties will use a FileReader object as input.
             FileReader fReader = new FileReader(dbSettingsPropertyFile);
             // Load jdbc related properties in above file.
