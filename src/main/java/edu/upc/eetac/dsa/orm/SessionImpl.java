@@ -81,10 +81,31 @@ public class SessionImpl implements Session {
     }
     // TODO FINISH THE MOFICATION OF THE OBJECT GIVEN THE UPDATED OBJECT
     public void update(Object object) {
+        String updateQuery = QueryHelper.createQueryUPDATE(object);
+        PreparedStatement pstm = null;
+        try {
+            pstm = conn.prepareStatement(updateQuery);
+            pstm.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
 
     }
     // TODO FINISH THE DELETE OBJECT FROM DB GIVEN THE OBJECT
-    public void delete(Object object) {
+    public void delete(Object o, String ID) {
+        String delete = QueryHelper.createQueryDELETE(o);
+        PreparedStatement pstm = null;
+        try {
+            pstm=conn.prepareStatement(delete);
+            pstm.setObject(1, ID);
+            pstm.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
     // TODO FINISH THE GET ALL OF THE DATA FROM DB GIVEN THE CLASS(model)

@@ -50,5 +50,27 @@ public class QueryHelper {
 
         return sb.toString();
     }
+    public static String createQueryUPDATE(Object entity) {
+        StringBuffer sb = new StringBuffer("UPDATE");
+        sb.append(entity.getClass().getSimpleName());
+        sb.append(" SET ");
+
+        String [] fields = ObjectHelper.getFields(entity);
+
+        sb.append("ID = ?");
+        for (String field: fields) {
+            sb.append(",").append(field).append(" = ?");
+        }
+        sb.append(" WHERE ID = ?");
+
+        return sb.toString();
+    }
+
+    public static String createQueryDELETE(Object entity){
+        StringBuffer sb = new StringBuffer("DELETE FROM ");
+        sb.append(entity.getClass().getSimpleName()).append(" ");
+        sb.append("WHERE ID = ?");
+        return sb.toString();
+    }
 
 }
