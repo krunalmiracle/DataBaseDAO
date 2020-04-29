@@ -7,17 +7,14 @@ import java.lang.reflect.Method;
 import java.sql.SQLException;
 
 public class ObjectHelper {
+
     public static String[] getFields(Object entity) {
 
         Class theClass = entity.getClass();
-
         Field[] fields = theClass.getDeclaredFields();
-
         String[] sFields = new String[fields.length];
         int i=0;
-
         for (Field f: fields) sFields[i++]=f.getName();
-
         return sFields;
 
     }
