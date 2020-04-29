@@ -1,4 +1,4 @@
-package edu.upc.eetac.dsa.orm.model;
+package edu.upc.eetac.dsa.models;
 
 public class Deparment {
     private final String name;

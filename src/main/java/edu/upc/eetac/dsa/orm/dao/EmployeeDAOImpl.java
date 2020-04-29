@@ -1,6 +1,6 @@
 package edu.upc.eetac.dsa.orm.dao;
 
-import edu.upc.eetac.dsa.orm.model.Employee;
+import edu.upc.eetac.dsa.models.Employee;
 import edu.upc.eetac.dsa.orm.*;
 import java.util.HashMap;
 import java.util.List;

@@ -43,13 +43,26 @@ public class SessionImpl implements Session {
     // FINISHED
     public void close() {
         try {
-            this.conn.close();
+            if(conn!=null)
+                this.conn.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
     }
-    // TODO FINISH THE GET OBJECT WITH ID FROM DB
+    // FINISH THE GET OBJECT WITH ID FROM DB
     public Object get(Class theClass, int ID) {
+        String selectQuery = QueryHelper.createQuerySELECT(theClass);
+
+        PreparedStatement pstm = null;
+
+        try {
+            pstm = conn.prepareStatement(selectQuery);
+            pstm.setObject(1, ID);
+            pstm.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
     // TODO FINISH THE MOFICATION OF THE OBJECT GIVEN THE UPDATED OBJECT
