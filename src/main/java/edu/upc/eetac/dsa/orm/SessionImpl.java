@@ -87,7 +87,17 @@ public class SessionImpl implements Session {
 
     }
     // TODO FINISH THE DELETE OBJECT FROM DB GIVEN THE OBJECT
-    public void delete(Object object) {
+    public void delete(Class c, String ID) {
+        String delete = QueryHelper.createQueryDELETE(c);
+        PreparedStatement pstm = null;
+        try {
+            Object obj = c.newInstance();
+            pstm=conn.prepareStatement(delete);
+            pstm.setObject(1, ID);
+            ResultSet res = pstm.executeQuery();
+        } catch (InstantiationException|SQLException|IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
     }
     // TODO FINISH THE GET ALL OF THE DATA FROM DB GIVEN THE CLASS(model)
