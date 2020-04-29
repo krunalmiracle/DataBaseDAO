@@ -2,7 +2,9 @@ package edu.upc.eetac.dsa.orm.util;
 
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 
 public class ObjectHelper {
     public static String[] getFields(Object entity) {
@@ -21,28 +23,36 @@ public class ObjectHelper {
     }
 
 
-    public static void setter(Object object, String property, Object value) throws NoSuchMethodException {
+    public static void setter(Object object, String property, Object value)  throws NoSuchMethodException{
         // Method
-        Object ret = null;
         Class theClass = object.getClass();
-
+        try{
         //Methods of type setters are usually like setProperty while property is defined as property in the Object
         String gMethod = "set"+ property.substring(0,1).toUpperCase()+property.substring(1);
         System.out.println("method> " + gMethod);
         Method setter = null;
         if(value.getClass()==String.class){
-            setter = theClass.getMethod(gMethod,String.class);
+            //If the property starts with the word list than parse the value to string as comma separated
+                if(property.endsWith("s") && property.startsWith("list")){
+                    setter = theClass.getMethod(gMethod,String.class);
+                }else{
+                    setter = theClass.getMethod(gMethod,String.class);
+                }
+
         } else if(value.getClass()==Double.class){
             setter = theClass.getMethod(gMethod,double.class);
+        }else if (value.getClass() == int.class)
+        {
+            setter = theClass.getMethod(gMethod,int.class);
+        }else if (value.getClass() == Integer.class)
+        {
+            setter = theClass.getMethod(gMethod,Integer.class);
         }
-
-        try{
             // invoke
             setter.invoke(object, value);
-        }catch (Exception e){
+        }catch (IllegalAccessException | InvocationTargetException e){
             e.printStackTrace();
         }
-
     }
 
     public static Object getter(Object object, String property)throws Exception {

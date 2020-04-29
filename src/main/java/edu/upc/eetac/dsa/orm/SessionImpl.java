@@ -28,19 +28,16 @@ public class SessionImpl implements Session {
             pstm = conn.prepareStatement(insertQuery);
             pstm.setObject(1,randomUtils.generateId(sizeID) );
             int i = 2;
-
+            //Only Primitive Types Int String Double
             for (String field: ObjectHelper.getFields(entity)) {
                 pstm.setObject(i++, ObjectHelper.getter(entity, field));
             }
 
             pstm.executeQuery();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             close();
         }
 
@@ -65,7 +62,6 @@ public class SessionImpl implements Session {
             pstm = conn.prepareStatement(selectQuery);
             pstm.setObject(1, ID);
             ResultSet resultSet =  pstm.executeQuery();
-            // TODO ADD TO OBJECT THE CORRESPONDING VALUES FROM THE RESULT SET
             //INVOKE SETTER FOR EACH CORRESPONDING PROPERTY OF THE TABLE TO MAP WITH OBJECT
             while (resultSet.next()){
                 Field[] fields = theClass.getDeclaredFields();
@@ -73,12 +69,13 @@ public class SessionImpl implements Session {
                 for(int i = 0; i < fields.length; i ++){
                     ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
                     String name = resultSetMetaData.getColumnName(i+2);
-
                     ObjectHelper.setter(obj,name, resultSet.getObject(i+2));
                 }
             }
         }catch (InstantiationException|SQLException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();
+        }finally {
+            close();
         }
         return null;
     }
