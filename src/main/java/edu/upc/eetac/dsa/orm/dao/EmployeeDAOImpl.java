@@ -70,7 +70,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
         Session session = null;
         try {
             session = FactorySession.openSession();
-            session.delete(Employee.class);
+            session.delete(Employee.class,employeeID);
         }
         catch (Exception e) {
             // LOG

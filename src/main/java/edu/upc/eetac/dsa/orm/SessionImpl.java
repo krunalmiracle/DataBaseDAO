@@ -84,6 +84,18 @@ public class SessionImpl implements Session {
     }
     // TODO FINISH THE MOFICATION OF THE OBJECT GIVEN THE UPDATED OBJECT
     public void update(Object object) {
+        String updateQuery = QueryHelper.createQueryUPDATE(object);
+        PreparedStatement pstm = null;
+        try {
+            pstm = conn.prepareStatement(updateQuery);
+            pstm.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            close();
+        }
 
     }
     // TODO FINISH THE DELETE OBJECT FROM DB GIVEN THE OBJECT
