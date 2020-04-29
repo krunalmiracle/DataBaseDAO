@@ -96,12 +96,11 @@ public class SessionImpl implements Session {
 
     }
     // TODO FINISH THE DELETE OBJECT FROM DB GIVEN THE OBJECT
-    public void delete(Object o, String ID) {
+    public void delete(Object o) {
         String delete = QueryHelper.createQueryDELETE(o);
         PreparedStatement pstm = null;
         try {
             pstm=conn.prepareStatement(delete);
-            pstm.setObject(1, ID);
             pstm.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
