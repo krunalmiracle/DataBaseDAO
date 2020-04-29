@@ -82,11 +82,13 @@ public class Main {
         server.shutdownNow();
         */
         /////////////////////DATABASE TEST 1///////////////////////////////////////////////
-        DBJDBC.findall();
+        /*DBJDBC.findall();
         DBJDBC.insert();
         DBJDBC.findall();
         /////////////////////DATABASE TEST 2///////////////////////////////////////////////
-        DBJDBC2.insert();
+        DBJDBC2.insert();*/
+        /////////////////////DATABASE TEST 3///////////////////////////////////////////////
+
     }
 }
 class DBJDBC2{

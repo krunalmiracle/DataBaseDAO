@@ -1,7 +1,7 @@
-package edu.upc.eetac.dsa;
+package edu.upc.eetac.dsa.orm;
 
-import edu.upc.eetac.dsa.util.ObjectHelper;
-import edu.upc.eetac.dsa.util.QueryHelper;
+import edu.upc.eetac.dsa.orm.util.ObjectHelper;
+import edu.upc.eetac.dsa.orm.util.QueryHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,14 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class SessionImpl implements Session  {
-
+public class SessionImpl implements Session {
     private final Connection conn;
-    public SessionImpl(Connection conn) throws SQLException {
+
+    public SessionImpl(Connection conn) {
         this.conn = conn;
-        if(conn==null){
-            throw new SQLException("Connection not made:DUE TO BAD JDBC properties file configuration");
-        }
     }
 
     public void save(Object entity) {
@@ -42,7 +39,7 @@ public class SessionImpl implements Session  {
         }
 
     }
-    // TODO : NEED TO FINISH THIS
+
     public void close() {
 
     }

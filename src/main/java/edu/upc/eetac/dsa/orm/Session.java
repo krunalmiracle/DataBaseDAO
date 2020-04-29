@@ -1,9 +1,9 @@
-package edu.upc.eetac.dsa;
+package edu.upc.eetac.dsa.orm;
 
 import java.util.HashMap;
 import java.util.List;
 
-public interface Session {
+public interface Session<E> {
     void save(Object entity);
     void close();
     Object get(Class theClass, int ID);
