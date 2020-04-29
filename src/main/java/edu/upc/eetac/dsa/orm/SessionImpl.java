@@ -96,15 +96,24 @@ public class SessionImpl implements Session {
 
     }
     // TODO FINISH THE DELETE OBJECT FROM DB GIVEN THE OBJECT
-    public void delete(Object o) {
+    public void delete(Object o) throws Exception {
         String delete = QueryHelper.createQueryDELETE(o);
         PreparedStatement pstm = null;
         try {
             pstm=conn.prepareStatement(delete);
-            pstm.executeQuery();
-        } catch (SQLException e) {
+            for(String field: ObjectHelper.getFields(o)){
+                if(field.equals("ID")) {
+                    pstm.setObject(1, ObjectHelper.getter(o, field));
+
+                }
+                pstm.executeQuery();
+            }
+
+        }
+        catch (SQLException e){
             e.printStackTrace();
         }
+
 
     }
     // TODO FINISH THE GET ALL OF THE DATA FROM DB GIVEN THE CLASS(model)

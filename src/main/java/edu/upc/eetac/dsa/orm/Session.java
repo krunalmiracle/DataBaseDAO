@@ -9,7 +9,7 @@ public interface Session<E> {
     void close();
     Object get(Class theClass, String ID);
     void update(Object object);
-    void delete(Object o);
+    void delete(Object o) throws Exception;
     List<Object> findAll(Class theClass);
     List<Object> findAll(Class theClass, HashMap params);
     List<Object> query(String query, Class theClass, HashMap params);
