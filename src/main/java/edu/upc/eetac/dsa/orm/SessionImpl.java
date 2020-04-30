@@ -6,8 +6,10 @@ import edu.upc.eetac.dsa.orm.util.ObjectHelper;
 import edu.upc.eetac.dsa.orm.util.QueryHelper;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -29,19 +31,37 @@ public class SessionImpl implements Session {
             pstm.setObject(1,randomUtils.generateId(sizeID) );
             int i = 2;
             //Only Primitive Types Int String Double
-            for (String field: ObjectHelper.getFields(entity)) {
+            for (String field: ObjectHelper.getStrFields(entity)) {
                 pstm.setObject(i++, ObjectHelper.getter(entity, field));
             }
             pstm.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+    }
+    public void saveList(Object entity){
+        //For a Player which contains listItems, this will save all the items in the table items
+        try {
+            Object objList = null;
             //listObjects Relational Mapping to ObjectName Table
-                for (String field: ObjectHelper.getListFields(entity)) {
-                    //1:N Object Mapping For Example Player with Items
-                    //Find the Object class
-                    //GET THE FIELDS
-                    //GET THE VALUES FROM THE OBJECT
-                    //CREATE STATEMENT WITH RANDOM ID
+            for (Field field: ObjectHelper.getListFields(entity)) {
+                //Create Query for the List Field Primitive Type
+                //Gets the Name of the Type inside List
+                //ParameterizedType fieldListGenericType = (ParameterizedType) field.getGenericType();
+                //Class<?> theClazz = (Class<?>) fieldListGenericType.getActualTypeArguments()[0];
+                //System.out.println(theClazz); // class java.lang.Object
+                //Get the Object from the List of Objects
+                //obj = theClazz.newInstance();
+                objList = ObjectHelper.getter(entity,field.getName());
+                //Class<?> cls = Class.forName("String");
+                for (Object o :(List) objList) {
+                    // Save the Object in Database in the Corresponding Table
+                    save(o);
                 }
-                //EXECUTE STATEMENT
+            }
+            //EXECUTE STATEMENT
             //REPEAT ABOVE STATEMENT TILL SIZE OF LIST OBJECTSs
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,12 +78,10 @@ public class SessionImpl implements Session {
             e.printStackTrace();
         }
     }
-    // TODO Recursive Object Relationship, Primitive Object Completed
+    //Completed getObject(Player..) with list as null, use getList for that!
     public Object get(Class theClass, String ID) {
-
         String selectQuery = QueryHelper.createQuerySELECT(theClass);
-
-        Object obj = null;PreparedStatement pstm = null;
+        Object obj = null; PreparedStatement pstm = null;
         //Instantiating a object of type class for the getters
         try {
             obj = theClass.newInstance();
@@ -78,17 +96,42 @@ public class SessionImpl implements Session {
                 for(int i = 0; i < fields.length; i ++){
                     ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
                     String name = resultSetMetaData.getColumnName(i+2);
-                    ObjectHelper.setter(obj,name, resultSet.getObject(i+2));
+                   ObjectHelper.setter(obj,name, resultSet.getObject(i+2));
                 }
             }
-            //TODO Populate the listProperty of the Object Class
-
         }catch (InstantiationException|SQLException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();
-        }finally {
-            close();
         }
-        return null;
+        return obj;
+    }
+    // Given Class (Item,Material) with parentID returns list<E>
+    public List<Class> getList(Class theClass,String parentID){
+        String selectQuery = QueryHelper.createParentIDQuerySELECT(theClass);
+         PreparedStatement pstm = null;
+        //Instantiating a object of type class for the getters
+        List<Class> objList = new LinkedList<>();
+        try {
+            pstm = conn.prepareStatement(selectQuery);
+            pstm.setObject(1, parentID);
+            ResultSet resultSet = pstm.executeQuery();
+            while(resultSet.next()) {
+                Object obj = null; obj = theClass.newInstance();
+                Field[] fields = ObjectHelper.getFields(obj);
+
+                resultSet.getString(1);
+                for(int i = 0; i < fields.length; i ++) {
+                    ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+                    String name = resultSetMetaData.getColumnName(i + 2);
+                    if(name!="parentID")
+                        obj =  ObjectHelper.setter(obj, name, resultSet.getObject(i + 2));
+                }
+                //We have filled all of the fields inside the Object of type <E>
+                objList.add((Class) obj);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return objList;
     }
     // TODO FINISH THE MOFICATION OF THE OBJECT GIVEN THE UPDATED OBJECT
     public void update(Object object) {
@@ -112,7 +155,7 @@ public class SessionImpl implements Session {
         PreparedStatement pstm = null;
         try {
             pstm=conn.prepareStatement(delete);
-            for(String field: ObjectHelper.getFields(o)){
+            for(String field: ObjectHelper.getStrFields(o)){
                 if(field.equals("getID")) {
                     pstm.setObject(1, ObjectHelper.getter(o, field));
                 }

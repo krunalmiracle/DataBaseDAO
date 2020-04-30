@@ -1,6 +1,7 @@
 package edu.upc.eetac.dsa;
 
 import edu.upc.eetac.dsa.orm.SessionImpl;
+import edu.upc.eetac.dsa.orm.util.ObjectHelper;
 import io.swagger.jaxrs.config.BeanConfig;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -11,9 +12,13 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.TypeVariable;
 import java.net.URI;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -96,7 +101,7 @@ public class Main {
         /////////////////////Class TEST ///////////////////////////////////////////////
         //Test
         /*Object ret = null;
-        Test object = new Test();
+
         Class theClass = object.getClass();
         Method getter = theClass.getMethod("getaDouble");
         // Invoke
@@ -108,62 +113,42 @@ public class Main {
         double t = Double.parseDouble((String) ret);
         System.out.println(ret.toString());
         */
+        /*Test testobject = new Test();
+        Class theClass = testobject.getClass();
+        Class secClass = theClass.getClass();
+        Field field = theClass.getDeclaredField("listName");
+        ParameterizedType stringListType = (ParameterizedType) field.getGenericType();
+        Class<?> stringListClass = (Class<?>) stringListType.getActualTypeArguments()[0];
+        System.out.println(stringListClass); // class java.lang.String.
+        Object obj = null;
+        obj =(List) ObjectHelper.getter(testobject,field.getName());
+        //Class<?> cls = Class.forName("String");
+        for (Object o :(List) obj) {
+            logger.info(o.toString());
+            int t = 1;
+        }
+        ArrayList<String> sFields = new ArrayList<String>();
+        */
+        /*int i=0;
+        for (Field f: fields) {
+            if(f.getName().contains("list"))
+                sFields.add(f.getName()) ;
+        }
+        String[] sFieldsArr = new String[sFields.size()];
+        sFieldsArr = sFields.toArray(sFieldsArr);
+        */
+
+
+    }
+    public static <T> T convertInstanceOfObject(Object o) {
+        try {
+            return (T) o;
+        } catch (ClassCastException e) {
+            return null;
+        }
     }
 }
-class Test{
-    private String name;
-    private double aDouble;
-    private int anInt;
-    private boolean aBoolean;
-    private List<String> listName;
 
-    public Test(){
-        this.name = "22";
-        this.aDouble = 22.00345;
-        this.aBoolean = true;
-        this.anInt = 3;
-        listName = new LinkedList<String>();
-        listName.add("World");
-        listName.add("World2");
-    }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<String> getListName() {
-        return listName;
-    }
-
-    public void setListName(List<String> listName) {
-        this.listName = listName;
-    }
-    public int getAnInt() {
-        return anInt;
-    }
-
-    public void setAnInt(int anInt) {
-        this.anInt = anInt;
-    }
-
-    public boolean isaBoolean() {
-        return aBoolean;
-    }
-
-    public void setaBoolean(boolean aBoolean) {
-        this.aBoolean = aBoolean;
-    }
-    public double getaDouble() {
-        return aDouble;
-    }
-
-    public void setaDouble(double aDouble) {
-        this.aDouble = aDouble;
-    }
-}
 class DBJDBC2{
     public DBJDBC2(){}//Empty Constructor
     // FORMA MENOS PRIMITIVA QUITAMOS LA POSSIBILIDAD DE SQL INJECTION

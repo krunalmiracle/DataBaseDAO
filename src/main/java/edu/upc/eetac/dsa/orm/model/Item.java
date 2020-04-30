@@ -15,6 +15,16 @@ public class Item {
     //Empty Constructor
     public Item() {
     }
+    public Item(String ID, String name, String type, int rarity, int description, List<Material> listMaterials, int offense, int defense) {
+        this.ID = ID;
+        this.name = name;
+        this.type = type;
+        this.rarity = rarity;
+        this.description = description;
+        this.listMaterials = listMaterials;
+        this.offense = offense;
+        this.defense = defense;
+    }
     public String getID() {
         return ID;
     }

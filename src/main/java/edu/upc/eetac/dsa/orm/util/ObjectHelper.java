@@ -1,7 +1,5 @@
 package edu.upc.eetac.dsa.orm.util;
 
-
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ObjectHelper {
-    //Returns Normal Primitive Fields
-    public static String[] getFields(Object entity) {
+    //Returns Normal Types(Int,String..) Fields as String(Name)
+    public static String[] getStrFields(Object entity) {
 
         Class theClass = entity.getClass();
 
@@ -27,21 +25,32 @@ public class ObjectHelper {
         return sFieldsArr;
 
     }
-    //Returns list Fields
-    public static String[] getListFields(Object entity) {
+    //Returns Normal Types(Int,String..) Fields as Fields
+    public static Field[] getFields(Object entity) {
+
         Class theClass = entity.getClass();
         Field[] fields = theClass.getDeclaredFields();
-        ArrayList<String> sFields = new ArrayList<String>();
+        ArrayList<Field> FieldsArr = new ArrayList<Field>();
+        int i=0;
+        for (Field f: fields) {
+            if(!f.getName().contains("list"))
+                FieldsArr.add(f) ;
+        }
+        return (Field[]) FieldsArr.toArray();
+    }
+    //Returns list Fields as Fields
+    public static Field[] getListFields(Object entity) {
+        Class theClass = entity.getClass();
+        Field[] fields = theClass.getDeclaredFields();
+        ArrayList<Field> FieldsArr = new ArrayList<Field>();
         int i=0;
         for (Field f: fields) {
             if(f.getName().contains("list"))
-                sFields.add(f.getName()) ;
+                FieldsArr.add(f) ;
         }
-        String[] sFieldsArr = new String[sFields.size()];
-        sFieldsArr = sFields.toArray(sFieldsArr);
-        return sFieldsArr;
+        return (Field[]) FieldsArr.toArray();
     }
-    public static void setter(Object object, String property, Object value)  throws NoSuchMethodException{
+    public static Object setter(Object object, String property, Object value)  throws NoSuchMethodException{
         // Method
         Class theClass = object.getClass();
         try{
@@ -63,6 +72,7 @@ public class ObjectHelper {
         }catch (IllegalAccessException | InvocationTargetException e){
             e.printStackTrace();
         }
+        return object;
     }
 
     public static Object getter(Object object, String property)throws Exception {

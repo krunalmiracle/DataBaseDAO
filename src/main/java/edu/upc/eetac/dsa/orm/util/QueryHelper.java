@@ -12,7 +12,7 @@ public class QueryHelper {
         sb.append(entity.getClass().getSimpleName()).append(" ");
         sb.append("(");
 
-        String [] fields = ObjectHelper.getFields(entity);
+        String [] fields = ObjectHelper.getStrFields(entity);
 
         sb.append("ID");
         for (String field: fields) {
@@ -50,12 +50,19 @@ public class QueryHelper {
 
         return sb.toString();
     }
+    public static String createParentIDQuerySELECT(Object entity) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT * FROM ").append(entity.getClass().getSimpleName());
+        sb.append(" WHERE parentID = ?");
+
+        return sb.toString();
+    }
     public static String createQueryUPDATE(Object entity) {
         StringBuffer sb = new StringBuffer("UPDATE");
         sb.append(entity.getClass().getSimpleName());
         sb.append(" SET ");
 
-        String [] fields = ObjectHelper.getFields(entity);
+        String [] fields = ObjectHelper.getStrFields(entity);
 
         sb.append("ID = ?");
         for (String field: fields) {

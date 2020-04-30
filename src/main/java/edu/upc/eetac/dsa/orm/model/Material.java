@@ -3,6 +3,7 @@ package edu.upc.eetac.dsa.orm.model;
 import java.util.List;
 
 public class Material {
+
     private String ID;
     private String name;
     private String description;
@@ -10,6 +11,13 @@ public class Material {
     //Empty Constructor
     public Material() {
     }
+    public Material(String ID, String name, String description, int quantity) {
+        this.ID = ID;
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+    }
+
     public String getID() {
         return ID;
     }
@@ -41,4 +49,8 @@ public class Material {
         this.quantity = quantity;
     }
 
+    @Override
+    public String toString() {
+        return "ID "+ this.getID() +" name: "+ this.name;
+    }
 }
