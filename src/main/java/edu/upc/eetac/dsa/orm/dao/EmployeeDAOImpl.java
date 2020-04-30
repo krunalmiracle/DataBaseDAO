@@ -54,7 +54,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
         Session session = null;
         try {
             session = FactorySession.openSession();
-            session.update(Employee.class);
+            session.update(employee);
         }
         catch (Exception e) {
             // LOG
@@ -70,7 +70,7 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
         Session session = null;
         try {
             session = FactorySession.openSession();
-            session.delete(Employee.class,employeeID);
+            session.delete(employee);
         }
         catch (Exception e) {
             // LOG

@@ -32,9 +32,17 @@ public class SessionImpl implements Session {
             for (String field: ObjectHelper.getFields(entity)) {
                 pstm.setObject(i++, ObjectHelper.getter(entity, field));
             }
-
             pstm.executeQuery();
-
+            //listObjects Relational Mapping to ObjectName Table
+                for (String field: ObjectHelper.getListFields(entity)) {
+                    //1:N Object Mapping For Example Player with Items
+                    //Find the Object class
+                    //GET THE FIELDS
+                    //GET THE VALUES FROM THE OBJECT
+                    //CREATE STATEMENT WITH RANDOM ID
+                }
+                //EXECUTE STATEMENT
+            //REPEAT ABOVE STATEMENT TILL SIZE OF LIST OBJECTSs
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -50,7 +58,7 @@ public class SessionImpl implements Session {
             e.printStackTrace();
         }
     }
-    // TODO FINISHED!
+    // TODO Recursive Object Relationship, Primitive Object Completed
     public Object get(Class theClass, String ID) {
 
         String selectQuery = QueryHelper.createQuerySELECT(theClass);
@@ -65,6 +73,7 @@ public class SessionImpl implements Session {
             //INVOKE SETTER FOR EACH CORRESPONDING PROPERTY OF THE TABLE TO MAP WITH OBJECT
             while (resultSet.next()){
                 Field[] fields = theClass.getDeclaredFields();
+                //SQL WILL NEVER RETURN LIST AS A RESULT
                 resultSet.getString(1);
                 for(int i = 0; i < fields.length; i ++){
                     ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
@@ -72,6 +81,8 @@ public class SessionImpl implements Session {
                     ObjectHelper.setter(obj,name, resultSet.getObject(i+2));
                 }
             }
+            //TODO Populate the listProperty of the Object Class
+
         }catch (InstantiationException|SQLException | NoSuchMethodException | IllegalAccessException e) {
             e.printStackTrace();
         }finally {
@@ -102,9 +113,8 @@ public class SessionImpl implements Session {
         try {
             pstm=conn.prepareStatement(delete);
             for(String field: ObjectHelper.getFields(o)){
-                if(field.equals("ID")) {
+                if(field.equals("getID")) {
                     pstm.setObject(1, ObjectHelper.getter(o, field));
-
                 }
                 pstm.executeQuery();
             }

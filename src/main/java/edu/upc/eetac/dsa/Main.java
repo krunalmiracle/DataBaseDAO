@@ -11,8 +11,11 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import edu.upc.eetac.dsa.orm.model.Item;
 import java.sql.Connection;
@@ -90,8 +93,75 @@ public class Main {
         DBJDBC.findall();
         /////////////////////DATABASE TEST 2///////////////////////////////////////////////
         DBJDBC2.insert();*/
-        /////////////////////DATABASE TEST 3///////////////////////////////////////////////
+        /////////////////////Class TEST ///////////////////////////////////////////////
+        //Test
+        /*Object ret = null;
+        Test object = new Test();
+        Class theClass = object.getClass();
+        Method getter = theClass.getMethod("getaDouble");
+        // Invoke
+        ret = getter.invoke(object);
+        if(ret.getClass() == Integer.class){
 
+            System.out.println("Integer" + ret.toString());
+        }
+        double t = Double.parseDouble((String) ret);
+        System.out.println(ret.toString());
+        */
+    }
+}
+class Test{
+    private String name;
+    private double aDouble;
+    private int anInt;
+    private boolean aBoolean;
+    private List<String> listName;
+
+    public Test(){
+        this.name = "22";
+        this.aDouble = 22.00345;
+        this.aBoolean = true;
+        this.anInt = 3;
+        listName = new LinkedList<String>();
+        listName.add("World");
+        listName.add("World2");
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<String> getListName() {
+        return listName;
+    }
+
+    public void setListName(List<String> listName) {
+        this.listName = listName;
+    }
+    public int getAnInt() {
+        return anInt;
+    }
+
+    public void setAnInt(int anInt) {
+        this.anInt = anInt;
+    }
+
+    public boolean isaBoolean() {
+        return aBoolean;
+    }
+
+    public void setaBoolean(boolean aBoolean) {
+        this.aBoolean = aBoolean;
+    }
+    public double getaDouble() {
+        return aDouble;
+    }
+
+    public void setaDouble(double aDouble) {
+        this.aDouble = aDouble;
     }
 }
 class DBJDBC2{
