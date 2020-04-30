@@ -10,7 +10,7 @@ public interface Session<E> {
     Object get(Class theClass, String ID);
     void update(Object object);
     void delete(Object o) throws Exception;
-    List<Object> findAll(Class theClass);
+    List<Object> findAll(Class theClass) throws SQLException;
     List<Object> findAll(Class theClass, HashMap params);
     List<Object> query(String query, Class theClass, HashMap params);
 }

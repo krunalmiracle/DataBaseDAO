@@ -1,13 +1,12 @@
 package edu.upc.eetac.dsa.orm;
 
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
 import edu.upc.eetac.dsa.RandomUtils;
 import edu.upc.eetac.dsa.orm.util.ObjectHelper;
 import edu.upc.eetac.dsa.orm.util.QueryHelper;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -170,7 +169,22 @@ public class SessionImpl implements Session {
 
     }
     // TODO FINISH THE GET ALL OF THE DATA FROM DB GIVEN THE CLASS(model)
-    public List<Object> findAll(Class theClass) {
+    public List<Object> findAll(Class theclass) throws SQLException {
+        String findall = QueryHelper.createQuerySELECT(theclass);
+        PreparedStatement pstm = null;
+        try {
+        pstm = conn.prepareStatement(findall);
+        List<Object> tableNames = new ArrayList<>();
+        ResultSet rs = pstm.executeQuery();
+        while (rs.next()) {
+            tableNames.add(rs.getObject(1));
+        }
+        return tableNames;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         return null;
     }
     // TODO FINISH THE GET ALL OF THE DATA FROM DB GIVEN THE CLASS(model) & THE PARAMETERS WHICH MATCH THE HASH
