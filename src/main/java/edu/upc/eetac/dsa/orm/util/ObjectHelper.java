@@ -5,13 +5,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ObjectHelper {
     //Returns Normal Types(Int,String..) Fields as String(Name)
     public static String[] getStrFields(Object entity) {
 
         Class theClass = entity.getClass();
-
         Field[] fields = theClass.getDeclaredFields();
         ArrayList<String> sFields = new ArrayList<String>();
         int i=0;
@@ -30,46 +31,55 @@ public class ObjectHelper {
 
         Class theClass = entity.getClass();
         Field[] fields = theClass.getDeclaredFields();
-        ArrayList<Field> FieldsArr = new ArrayList<Field>();
+        List<Field> listFields = new LinkedList<>();
         int i=0;
         for (Field f: fields) {
             if(!f.getName().contains("list"))
-                FieldsArr.add(f) ;
+                listFields.add(f) ;
         }
-        return (Field[]) FieldsArr.toArray();
+        Field[] tmp = new Field[listFields.size()];
+        i = 0;
+        for (Field f:listFields) {
+            tmp[i] = listFields.get(i);
+            i++;
+        }
+        return tmp;
     }
     //Returns list Fields as Fields
     public static Field[] getListFields(Object entity) {
         Class theClass = entity.getClass();
         Field[] fields = theClass.getDeclaredFields();
-        ArrayList<Field> FieldsArr = new ArrayList<Field>();
+        List<Field> listFields = new LinkedList<>();
         int i=0;
         for (Field f: fields) {
             if(f.getName().contains("list"))
-                FieldsArr.add(f) ;
+                listFields.add(f) ;
         }
-        return (Field[]) FieldsArr.toArray();
+        Field[] tmp = new Field[listFields.size()];
+        i = 0;
+        for (Field f:listFields) {
+            tmp[i] = listFields.get(i);
+            i++;
+        }
+        return tmp;
     }
     public static Object setter(Object object, String property, Object value)  throws NoSuchMethodException{
         // Method
-        Class theClass = object.getClass();
+        Class<?> theClass = object.getClass();
         try{
         //Methods of type setters are usually like setProperty while Property is defined as property in the Object
         String gMethod = "set"+ property.substring(0,1).toUpperCase()+property.substring(1);
         Method setter = null;
-        if(value.getClass()==String.class){
+        Class paramType = value.getClass();
             //If the property starts with the word list than parse the value to string as comma separated
-            setter = theClass.getMethod(gMethod,String.class);
-
-        } else if(value.getClass()==Double.class){
-            setter = theClass.getMethod(gMethod,double.class);
-        }else if (value.getClass() == Integer.class)
-        {
-            setter = theClass.getMethod(gMethod,Integer.class);
-        }
-            // invoke
-            setter.invoke(object, value);
-        }catch (IllegalAccessException | InvocationTargetException e){
+            if(paramType == Integer.class){
+                setter = theClass.getMethod(gMethod,Integer.TYPE);
+                setter.invoke(object, value);
+            }else{
+                setter = theClass.getMethod(gMethod,paramType);
+                setter.invoke(object, value);
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
         return object;

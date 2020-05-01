@@ -18,41 +18,36 @@ public class SessionImpl implements Session {
     public SessionImpl(Connection conn) {
         this.conn = conn;
     }
-    // TODO FINISHED!
-    public void save(Object entity) {
-
+    // Saves an Object(Player,Item,Material...) in DB excluded ListFields(use saveList for this)!z
+    public String save(Object entity) {
         String insertQuery = QueryHelper.createQueryINSERT(entity);
         RandomUtils randomUtils = new RandomUtils();
         PreparedStatement pstm = null;
-
+        String ID = randomUtils.generateID(sizeID);
         try {
             pstm = conn.prepareStatement(insertQuery);
-            pstm.setObject(1,randomUtils.generateId(sizeID) );
-            int i = 2;
-            //Only Primitive Types Int String Double
+            ObjectHelper.setter(entity,"ID",ID);
+            //pstm.setObject(1,ID );
+            int i = 1;
+            //Only Primitive Types Int String
             for (String field: ObjectHelper.getStrFields(entity)) {
-                pstm.setObject(i++, ObjectHelper.getter(entity, field));
+                Object objt = ObjectHelper.getter(entity, field);
+                pstm.setObject(i, objt);
+                i++;
             }
             pstm.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            close();
         }
+        return ID;
     }
+    //SAVES THE LIST OF OBJECT(Item,Materials) GIVEN Object(Player) Not Recursive
     public void saveList(Object entity){
         //For a Player which contains listItems, this will save all the items in the table items
         try {
             Object objList = null;
             //listObjects Relational Mapping to ObjectName Table
             for (Field field: ObjectHelper.getListFields(entity)) {
-                //Create Query for the List Field Primitive Type
-                //Gets the Name of the Type inside List
-                //ParameterizedType fieldListGenericType = (ParameterizedType) field.getGenericType();
-                //Class<?> theClazz = (Class<?>) fieldListGenericType.getActualTypeArguments()[0];
-                //System.out.println(theClazz); // class java.lang.Object
-                //Get the Object from the List of Objects
-                //obj = theClazz.newInstance();
                 objList = ObjectHelper.getter(entity,field.getName());
                 //Class<?> cls = Class.forName("String");
                 for (Object o :(List) objList) {
@@ -61,11 +56,9 @@ public class SessionImpl implements Session {
                 }
             }
             //EXECUTE STATEMENT
-            //REPEAT ABOVE STATEMENT TILL SIZE OF LIST OBJECTSs
+            //REPEAT ABOVE STATEMENT TILL SIZE OF LIST OBJECTS
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            close();
         }
 
     }
@@ -79,53 +72,54 @@ public class SessionImpl implements Session {
     }
     //Completed getObject(Player..) with list as null, use getList for that!
     public Object get(Class theClass, String ID) {
-        String selectQuery = QueryHelper.createQuerySELECT(theClass);
+
         Object obj = null; PreparedStatement pstm = null;
         //Instantiating a object of type class for the getters
         try {
+            String selectQuery = QueryHelper.createQuerySELECT(theClass.newInstance());
+
             obj = theClass.newInstance();
             pstm = conn.prepareStatement(selectQuery);
             pstm.setObject(1, ID);
-            ResultSet resultSet =  pstm.executeQuery();
+            ResultSet resultSet =  pstm.executeQuery();int i = 0;
             //INVOKE SETTER FOR EACH CORRESPONDING PROPERTY OF THE TABLE TO MAP WITH OBJECT
             while (resultSet.next()){
-                Field[] fields = theClass.getDeclaredFields();
                 //SQL WILL NEVER RETURN LIST AS A RESULT
-                resultSet.getString(1);
-                for(int i = 0; i < fields.length; i ++){
-                    ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-                    String name = resultSetMetaData.getColumnName(i+2);
-                   ObjectHelper.setter(obj,name, resultSet.getObject(i+2));
+                ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+                for(i=1;i<=resultSetMetaData.getColumnCount();i++){
+                    String name = resultSetMetaData.getColumnName(i);
+                       ObjectHelper.setter(obj,name, resultSet.getObject(i));
                 }
             }
-        }catch (InstantiationException|SQLException | NoSuchMethodException | IllegalAccessException e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
         return obj;
     }
-    // Given Class (Item,Material) with parentID returns list<E>
-    public List<Class> getList(Class theClass,String parentID){
-        String selectQuery = QueryHelper.createParentIDQuerySELECT(theClass);
+    // Given Class (Item,Player) with parentID returns list<Material,Item>
+    public List<Object> getList(Class theClass,String parentID){
+
          PreparedStatement pstm = null;
         //Instantiating a object of type class for the getters
-        List<Class> objList = new LinkedList<>();
+        List<Object> objList = new LinkedList<>();
         try {
+            String selectQuery = QueryHelper.createParentIDQuerySELECT(theClass.newInstance());
             pstm = conn.prepareStatement(selectQuery);
             pstm.setObject(1, parentID);
             ResultSet resultSet = pstm.executeQuery();
             while(resultSet.next()) {
-                Object obj = null; obj = theClass.newInstance();
+                Object obj = theClass.newInstance();
+                String[] strFields = ObjectHelper.getStrFields(obj);
                 Field[] fields = ObjectHelper.getFields(obj);
-
-                resultSet.getString(1);
-                for(int i = 0; i < fields.length; i ++) {
-                    ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-                    String name = resultSetMetaData.getColumnName(i + 2);
-                    if(name!="parentID")
-                        obj =  ObjectHelper.setter(obj, name, resultSet.getObject(i + 2));
+                ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+                for(int i=1;i<=resultSetMetaData.getColumnCount();i++){
+                    String name = resultSetMetaData.getColumnName(i);
+                    obj = ObjectHelper.setter(obj,name, resultSet.getObject(i));
                 }
                 //We have filled all of the fields inside the Object of type <E>
-                objList.add((Class) obj);
+               // theClass.cast(obj);
+                objList.add(obj);
+                String test = "";
             }
         }catch (Exception e){
             e.printStackTrace();

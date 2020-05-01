@@ -22,6 +22,51 @@ public class Test {
             listName.add(new Material("001","wood","Madera",1));
             listName.add(new Material("002","iron","Hierro",5));
         }
+        public static <T> T convertInstanceOfObject(Object o) {
+            try {
+                return (T) o;
+            } catch (ClassCastException e) {
+                return null;
+            }
+        }
+        //Test
+        /*Object ret = null;
+
+        Class theClass = object.getClass();
+        Method getter = theClass.getMethod("getaDouble");
+        // Invoke
+        ret = getter.invoke(object);
+        if(ret.getClass() == Integer.class){
+
+            System.out.println("Integer" + ret.toString());
+        }
+        double t = Double.parseDouble((String) ret);
+        System.out.println(ret.toString());
+        */
+        /*Test testobject = new Test();
+        Class theClass = testobject.getClass();
+        Class secClass = theClass.getClass();
+        Field field = theClass.getDeclaredField("listName");
+        ParameterizedType stringListType = (ParameterizedType) field.getGenericType();
+        Class<?> stringListClass = (Class<?>) stringListType.getActualTypeArguments()[0];
+        System.out.println(stringListClass); // class java.lang.String.
+        Object obj = null;
+        obj =(List) ObjectHelper.getter(testobject,field.getName());
+        //Class<?> cls = Class.forName("String");
+        for (Object o :(List) obj) {
+            logger.info(o.toString());
+            int t = 1;
+        }
+        ArrayList<String> sFields = new ArrayList<String>();
+        */
+        /*int i=0;
+        for (Field f: fields) {
+            if(f.getName().contains("list"))
+                sFields.add(f.getName()) ;
+        }
+        String[] sFieldsArr = new String[sFields.size()];
+        sFieldsArr = sFields.toArray(sFieldsArr);
+        */
         public String getName() {
             return name;
         }

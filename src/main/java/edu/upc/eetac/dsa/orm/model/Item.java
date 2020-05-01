@@ -5,18 +5,19 @@ import java.util.List;
 public class Item {
 
     private String ID;
+    private String parentID="";
     private String name;
     private String type;
-    private int rarity;
-    private int description;
+    private String rarity;
+    private String description;
     List<Material> listMaterials;
     private int offense;
     private int defense;
     //Empty Constructor
     public Item() {
     }
-    public Item(String ID, String name, String type, int rarity, int description, List<Material> listMaterials, int offense, int defense) {
-        this.ID = ID;
+    public Item(String parentID, String name, String type, String rarity, String description, List<Material> listMaterials, int offense, int defense) {
+        this.parentID = parentID;
         this.name = name;
         this.type = type;
         this.rarity = rarity;
@@ -32,6 +33,10 @@ public class Item {
     public void setID(String ID) {
         this.ID = ID;
     }
+
+    public String getParentID() { return parentID;}
+
+    public void setParentID(String parentID) {this.parentID = parentID;}
 
     public String getName() {
         return name;
@@ -49,19 +54,19 @@ public class Item {
         this.type = type;
     }
 
-    public int getRarity() {
+    public String getRarity() {
         return rarity;
     }
 
-    public void setRarity(int rarity) {
+    public void setRarity(String rarity) {
         this.rarity = rarity;
     }
 
-    public int getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(int description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 public class Material {
 
     private String ID;
+    private String parentID="";
     private String name;
     private String description;
     private int quantity;
@@ -25,6 +26,10 @@ public class Material {
     public void setID(String ID) {
         this.ID = ID;
     }
+
+    public String getParentID() { return parentID;}
+
+    public void setParentID(String parentID) {this.parentID = parentID;}
 
     public String getName() {
         return name;

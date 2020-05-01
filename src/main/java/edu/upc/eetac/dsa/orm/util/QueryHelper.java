@@ -12,19 +12,17 @@ public class QueryHelper {
         sb.append(entity.getClass().getSimpleName()).append(" ");
         sb.append("(");
 
-        String [] fields = ObjectHelper.getStrFields(entity);
-
-        sb.append("ID");
+        String[] fields = ObjectHelper.getStrFields(entity);
         for (String field: fields) {
-            sb.append(", ").append(field);
+            sb.append(field);
+            sb.append(",");
         }
-
-        sb.append(") VALUES (?");
-
+        sb.deleteCharAt(sb.length()-1);
+        sb.append(") VALUES (");
         for (String field: fields) {
-            sb.append(", ?");
+            sb.append("?,");
         }
-
+        sb.deleteCharAt(sb.length()-1);
         sb.append(")");
 
         return sb.toString();

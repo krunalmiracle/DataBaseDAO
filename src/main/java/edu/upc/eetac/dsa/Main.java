@@ -1,6 +1,7 @@
 package edu.upc.eetac.dsa;
 
 import edu.upc.eetac.dsa.orm.SessionImpl;
+import edu.upc.eetac.dsa.orm.dao.*;
 import edu.upc.eetac.dsa.orm.util.ObjectHelper;
 import io.swagger.jaxrs.config.BeanConfig;
 import org.apache.log4j.Logger;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import edu.upc.eetac.dsa.orm.model.Item;
+import edu.upc.eetac.dsa.orm.model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 // REST AND SWAGGER
@@ -92,60 +93,8 @@ public class Main {
          System.in.read();
         server.shutdownNow();
         */
-        /////////////////////DATABASE TEST 1///////////////////////////////////////////////
-        /*DBJDBC.findall();
-        DBJDBC.insert();
-        DBJDBC.findall();
-        /////////////////////DATABASE TEST 2///////////////////////////////////////////////
-        DBJDBC2.insert();*/
-        /////////////////////Class TEST ///////////////////////////////////////////////
-        //Test
-        /*Object ret = null;
 
-        Class theClass = object.getClass();
-        Method getter = theClass.getMethod("getaDouble");
-        // Invoke
-        ret = getter.invoke(object);
-        if(ret.getClass() == Integer.class){
-
-            System.out.println("Integer" + ret.toString());
-        }
-        double t = Double.parseDouble((String) ret);
-        System.out.println(ret.toString());
-        */
-        /*Test testobject = new Test();
-        Class theClass = testobject.getClass();
-        Class secClass = theClass.getClass();
-        Field field = theClass.getDeclaredField("listName");
-        ParameterizedType stringListType = (ParameterizedType) field.getGenericType();
-        Class<?> stringListClass = (Class<?>) stringListType.getActualTypeArguments()[0];
-        System.out.println(stringListClass); // class java.lang.String.
-        Object obj = null;
-        obj =(List) ObjectHelper.getter(testobject,field.getName());
-        //Class<?> cls = Class.forName("String");
-        for (Object o :(List) obj) {
-            logger.info(o.toString());
-            int t = 1;
-        }
-        ArrayList<String> sFields = new ArrayList<String>();
-        */
-        /*int i=0;
-        for (Field f: fields) {
-            if(f.getName().contains("list"))
-                sFields.add(f.getName()) ;
-        }
-        String[] sFieldsArr = new String[sFields.size()];
-        sFieldsArr = sFields.toArray(sFieldsArr);
-        */
-
-
-    }
-    public static <T> T convertInstanceOfObject(Object o) {
-        try {
-            return (T) o;
-        } catch (ClassCastException e) {
-            return null;
-        }
+        
     }
 }
 
