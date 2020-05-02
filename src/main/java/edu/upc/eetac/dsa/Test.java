@@ -6,7 +6,7 @@ import edu.upc.eetac.dsa.orm.model.Material;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Test {
+public class Test{
         private String name;
         private double aDouble;
         private int anInt;
@@ -22,6 +22,7 @@ public class Test {
             listName.add(new Material("001","wood","Madera",1));
             listName.add(new Material("002","iron","Hierro",5));
         }
+
         public static <T> T convertInstanceOfObject(Object o) {
             try {
                 return (T) o;

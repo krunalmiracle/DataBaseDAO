@@ -1,5 +1,7 @@
 package edu.upc.eetac.dsa.orm.model;
 
+import edu.upc.eetac.dsa.RandomUtils;
+
 import java.util.List;
 
 public class Player {
@@ -16,8 +18,8 @@ public class Player {
     List<Material> listMaterials;
     //Empty Constructor
     public Player(){}
-    public Player(String ID, String username, String password, int gamesPlayed, int kills, int deaths, int experience, int wins) {
-        this.ID = ID;
+    public Player(String username, String password, int gamesPlayed, int kills, int deaths, int experience, int wins) {
+        this.ID = RandomUtils.generateID(16);
         this.username = username;
         this.password = password;
         this.gamesPlayed = gamesPlayed;

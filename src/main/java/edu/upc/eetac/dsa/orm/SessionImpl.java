@@ -149,7 +149,7 @@ public class SessionImpl implements Session {
         try {
             pstm=conn.prepareStatement(delete);
             for(String field: ObjectHelper.getStrFields(o)){
-                if(field.equals("getID")) {
+                if(field.equals("ID")) {
                     pstm.setObject(1, ObjectHelper.getter(o, field));
                 }
                 pstm.executeQuery();

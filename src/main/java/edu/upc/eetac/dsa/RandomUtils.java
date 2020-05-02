@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomUtils {
     public RandomUtils(){}
-    public String generateID(int size){
+    public static String generateID(int size){
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-$#@?¿*/";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
