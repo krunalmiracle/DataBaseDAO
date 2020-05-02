@@ -93,7 +93,8 @@ public class Main {
          System.in.read();
         server.shutdownNow();
         */
-
+         Test t = new Test();
+         t.DeleteTest();
         
     }
 }

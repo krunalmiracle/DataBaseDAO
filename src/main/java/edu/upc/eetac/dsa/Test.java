@@ -1,8 +1,9 @@
 package edu.upc.eetac.dsa;
-
-import edu.upc.eetac.dsa.orm.model.Item;
+import edu.upc.eetac.dsa.orm.SessionImpl;
+import edu.upc.eetac.dsa.orm.dao.PlayerDAOImpl;
 import edu.upc.eetac.dsa.orm.model.Material;
-
+import edu.upc.eetac.dsa.orm.model.Player;
+import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,6 +22,14 @@ public class Test{
             listName = new LinkedList<Material>();
             listName.add(new Material("001","wood","Madera",1));
             listName.add(new Material("002","iron","Hierro",5));
+        }
+        public void DeleteTest() throws Exception {
+            Connection conn=DBUtils.getConnection();
+            SessionImpl imp = new SessionImpl(conn);
+            Player pl = new Player("Marc","inc", 5, 4, 3, 25, 5);
+            imp.save(pl);
+            imp.delete(pl);
+
         }
 
         public static <T> T convertInstanceOfObject(Object o) {
