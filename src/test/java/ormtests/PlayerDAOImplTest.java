@@ -1,10 +1,17 @@
 package ormtests;
+import edu.upc.eetac.dsa.orm.*;
+import edu.upc.eetac.dsa.orm.dao.*;
+import edu.upc.eetac.dsa.orm.dao.*;
+import edu.upc.eetac.dsa.orm.model.Player;
+import edu.upc.eetac.dsa.orm.model.Material;
+import org.apache.log4j.Logger;
+//Junit 4.13
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.util.*;
-import edu.upc.eetac.dsa.orm.*;
 public class PlayerDAOImplTest{
     PlayerDAOImpl playerdao= new PlayerDAOImpl();
     Player player = null;
