@@ -19,7 +19,6 @@ public class Player {
     //Empty Constructor
     public Player(){}
     public Player(String username, String password, int gamesPlayed, int kills, int deaths, int experience, int wins) {
-        this.ID = RandomUtils.generateID(16);
         this.username = username;
         this.password = password;
         this.gamesPlayed = gamesPlayed;

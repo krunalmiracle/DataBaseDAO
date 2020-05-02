@@ -12,10 +12,10 @@ public class PlayerDAOImpl implements IPlayerDAO {
     public String addPlayer(String username, String password, int gamesPlayed, int kills, int deaths, int experience, int wins) {
         Session session = null;
         Player pl = new Player(username, password, gamesPlayed, kills, deaths, experience, wins);
+        String ID=null;
         try {
             session = FactorySession.openSession();
-
-            session.save(pl);
+            ID=session.save(pl);
         }
         catch (Exception e) {
             // LOG
@@ -24,7 +24,7 @@ public class PlayerDAOImpl implements IPlayerDAO {
         finally {
             session.close();
         }
-        return pl.getID();
+        return ID;
     }
     public Player getPlayer(String id){
         Session session = null;

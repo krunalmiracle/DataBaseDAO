@@ -21,7 +21,7 @@ public class PlayerDAOImplTest{
     }
     @Test
     public void addPlayerTest(){
-        Assert.assertEquals(0,playerdao.addPlayer("Marc", "pass", 5, 4, 2, 23, 2));
+        Assert.assertNotNull(playerdao.addPlayer("Marc", "pass", 5, 4, 2, 23, 2));
     }
     @Test
     public void getPlayerTest(){
